@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Book</title>
+  <style>
+    :root {
+      --light-bg: #f8f5f1;
+      --dark-bg: #1e1e1e;
+      --light-text: #222;
+      --dark-text: #eee;
+      --page-color: #fffdf8;
+      --page-shadow: rgba(0, 0, 0, 0.1);
+    }
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: var(--light-bg);
+      color: var(--light-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      transition: background 0.6s, color 0.6s;
+      overflow: hidden;
+    }
+    .dark-mode {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+    .book {
+      width: 90%;
+      max-width: 600px;
+      height: 70vh;
+      background: var(--page-color);
+      box-shadow: 0 0 20px var(--page-shadow);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      margin-top: 40px;
+      perspective: 1000px;
+    }
+    .page {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: var(--page-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      backface-visibility: hidden;
+      transition: transform 0.8s ease;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .page:nth-child(even) {
+      transform: rotateY(180deg);
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #4a90e2;
+      color: white;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #357ab8;
+    }
+  </style>
+</head>
+<body>
+  <div class="book" id="book">
+    <div class="page">📖 صفحة 1<br>مرحبًا بك في Book Book</div>
+    <div class="page">🌙 صفحة 2<br>يمكنك القراءة براحة تامة هنا</div>
+    <div class="page">🌿 صفحة 3<br>الألوان هادئة تساعدك على التركيز</div>
+    <div class="page">☕ صفحة 4<br>قلب الصفحة واستمتع!</div>
+  </div>
+
+  <div class="controls">
+    <button id="prev">⬅️ السابق</button>
+    <button id="next">➡️ التالي</button>
+    <button id="mode">🌓 تبديل الوضع</button>
+  </div>
+
+  <audio id="flip-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_5bdf7c6e16.mp3"></audio>
+
+  <script>
+    const pages = document.querySelectorAll('.page');
+    const flipSound = document.getElementById('flip-sound');
+    let current = 0;
+
+    function showPage(index) {
+      pages.forEach((page, i) => {
+        page.style.transform = i <= index ? 'rotateY(-180deg)' : 'rotateY(0deg)';
+      });
+      flipSound.currentTime = 0;
+      flipSound.play();
+    }
+
+    document.getElementById('next').onclick = () => {
+      if (current < pages.length - 1) {
+        current++;
+        showPage(current);
+      }
+    };
+    document.getElementById('prev').onclick = () => {
+      if (current > 0) {
+        current--;
+        showPage(current);
+      }
+    };
+
+    document.getElementById('mode').onclick = () => {
+      document.body.classList.toggle('dark-mode');
+    };
+  </script>
+</body>
+</html>
